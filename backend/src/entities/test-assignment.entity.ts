@@ -8,10 +8,12 @@ import {
 import { User } from './user.entity';
 import { TestTemplate } from './test-template.entity';
 import { TestResult } from './test-result.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class TestAssignment {
   @PrimaryGeneratedColumn('uuid')
+  @Exclude()
   id: string;
 
   @ManyToOne(() => User, (user) => user.testAssignments)

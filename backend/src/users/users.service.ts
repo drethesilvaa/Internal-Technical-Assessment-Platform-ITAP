@@ -16,7 +16,16 @@ export class UsersService {
     return this.userRepo.find();
   }
 
-  create(dto: CreateUserDto) {
+  async findByEmail(email: string) {
+    const result = await this.userRepo.findOne({
+      where: { email: email },
+    });
+
+    if (!result) throw new NotFoundException('User not found');
+    return result;
+  }
+
+  async create(dto: CreateUserDto) {
     const user = this.userRepo.create(dto);
     return this.userRepo.save(user);
   }

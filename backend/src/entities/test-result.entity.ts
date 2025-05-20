@@ -7,10 +7,12 @@ import {
 } from 'typeorm';
 import { TestAssignment } from './test-assignment.entity';
 import { QuestionResult } from './question-result.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class TestResult {
   @PrimaryGeneratedColumn('uuid')
+  @Exclude()
   id: string;
 
   @ManyToOne(() => TestAssignment, (assignment) => assignment.results)

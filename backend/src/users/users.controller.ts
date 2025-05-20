@@ -6,6 +6,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,6 +27,13 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get(':email')
+  @Roles('admin')
+  @ApiOperation({ summary: 'Get user by email' })
+  findByEmail(@Query('email') email: string) {
+    return this.usersService.findByEmail(email);
   }
 
   @Post()

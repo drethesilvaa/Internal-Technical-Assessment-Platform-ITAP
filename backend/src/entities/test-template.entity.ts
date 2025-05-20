@@ -2,10 +2,12 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { User } from './user.entity';
 import { Question } from './question.entity';
 import { DifficultyLevel } from 'src/templates/dto/create-template.dto';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class TestTemplate {
   @PrimaryGeneratedColumn('uuid')
+  @Exclude()
   id: string;
 
   @Column()
