@@ -9,6 +9,7 @@ import { User } from './user.entity';
 import { TestTemplate } from './test-template.entity';
 import { TestResult } from './test-result.entity';
 import { Exclude } from 'class-transformer';
+import { Stack } from './stack.entity';
 
 @Entity()
 export class TestAssignment {
@@ -36,4 +37,7 @@ export class TestAssignment {
 
   @OneToMany(() => TestResult, (result) => result.testAssignment)
   results: TestResult[];
+
+  @ManyToOne(() => Stack, (stack) => stack.assignments, { eager: true })
+  stack: Stack;
 }

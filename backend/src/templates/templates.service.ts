@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TestTemplate } from '../entities/test-template.entity';
 import { Question } from '../entities/question.entity';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { User } from '../entities/user.entity';
+import { Stack } from 'src/entities/stack.entity';
 
 @Injectable()
 export class TemplatesService {
@@ -13,13 +14,17 @@ export class TemplatesService {
     private templateRepo: Repository<TestTemplate>,
     @InjectRepository(Question)
     private questionRepo: Repository<Question>,
+    @InjectRepository(Stack)
+    private stackRepo: Repository<Stack>,
   ) {}
 
   async createTemplate(dto: CreateTemplateDto, createdBy: User) {
+    const stack = await this.stackRepo.findOne({ where: { id: dto.stackId } });
+    if (!stack) throw new NotFoundException('Stack not found');
+
     const template = this.templateRepo.create({
-      name: dto.name,
-      stack: dto.stack,
-      difficulty: dto.difficulty,
+      ...dto,
+      stack,
       createdBy,
     });
 

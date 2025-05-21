@@ -1,8 +1,10 @@
 import { useAuth } from "@/context/AuthContext";
-import { BellIcon, HouseIcon, MagnifyingGlassIcon, SignOutIcon, UsersFourIcon } from "@phosphor-icons/react";
+import { BellIcon, ExamIcon, GearFineIcon, HouseIcon, MagnifyingGlassIcon, QuestionMarkIcon, SignOutIcon, StackIcon, UsersFourIcon } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 export const DashboardLayout = ({ children }: any) => {
 
+    const router = useRouter()
     const { logout } = useAuth();
 
 
@@ -10,12 +12,33 @@ export const DashboardLayout = ({ children }: any) => {
         <div className="flex h-screen">
             <ul className="menu bg-secondary h-full gap-2">
                 <li>
-                    <a href="/dashboard" className="tooltip tooltip-right" data-tip="Home">
+                    <a onClick={() => { router.push("/dashboard") }} className="tooltip tooltip-right" data-tip="Home">
                         <HouseIcon size={24} />
                     </a>
-                </li><li>
-                    <a href="/dashboard/users" className="tooltip tooltip-right" data-tip="Users">
+                </li>
+                <li>
+                    <a onClick={() => { router.push("/dashboard/users") }} className="tooltip tooltip-right" data-tip="Users">
                         <UsersFourIcon size={24} />
+                    </a>
+                </li>
+                <li>
+                    <a onClick={() => { router.push("/dashboard/test-templates") }} className="tooltip tooltip-right" data-tip="Test Templates">
+                        <StackIcon size={24} />
+                    </a>
+                </li>
+                <li>
+                    <a onClick={() => { router.push("/dashboard/tests") }} className="tooltip tooltip-right" data-tip="Tests">
+                        <ExamIcon size={24} />
+                    </a>
+                </li>
+                <li>
+                    <a onClick={() => { router.push("/dashboard/questions") }} className="tooltip tooltip-right" data-tip="Questions">
+                        <QuestionMarkIcon size={24} />
+                    </a>
+                </li>
+                <li>
+                    <a onClick={() => { router.push("/dashboard/settings") }} className="tooltip tooltip-right" data-tip="Settings">
+                        <GearFineIcon size={24} />
                     </a>
                 </li>
                 <li>

@@ -14,7 +14,7 @@ export class CreateTemplateDto {
 
   @ApiProperty()
   @IsString()
-  stack: string;
+  stackId: string;
 
   @ApiProperty({ enum: ['junior', 'intermediate', 'senior'] })
   @IsString()

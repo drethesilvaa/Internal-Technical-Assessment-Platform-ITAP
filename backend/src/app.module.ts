@@ -10,6 +10,7 @@ import { TestsModule } from './tests/tests.module';
 import { ResultsModule } from './results/results.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SharedModule } from './shared/shared.module';
+import { StacksModule } from './stacks/stacks.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SharedModule } from './shared/shared.module';
     ResultsModule,
     NotificationsModule,
     SharedModule,
+    StacksModule,
   ],
 })
 export class AppModule {}
