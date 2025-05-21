@@ -4,9 +4,10 @@ import { TemplatesController } from './templates.controller';
 import { TemplatesService } from './templates.service';
 import { TestTemplate } from '../entities/test-template.entity';
 import { Question } from '../entities/question.entity';
+import { StacksModule } from 'src/stacks/stacks.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TestTemplate, Question])],
+  imports: [TypeOrmModule.forFeature([TestTemplate, Question]), StacksModule],
   controllers: [TemplatesController],
   providers: [TemplatesService],
 })
