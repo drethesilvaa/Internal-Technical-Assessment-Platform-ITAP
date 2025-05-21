@@ -27,13 +27,13 @@ export const DashboardLayout = ({ children }: any) => {
                     </a>
                 </li>
                 <li>
-                    <a onClick={() => { router.push("/dashboard/tests") }} className="tooltip tooltip-right" data-tip="Tests">
-                        <ExamIcon size={24} />
+                    <a onClick={() => { router.push("/dashboard/questions") }} className="tooltip tooltip-right" data-tip="Questions">
+                        <QuestionMarkIcon size={24} />
                     </a>
                 </li>
                 <li>
-                    <a onClick={() => { router.push("/dashboard/questions") }} className="tooltip tooltip-right" data-tip="Questions">
-                        <QuestionMarkIcon size={24} />
+                    <a onClick={() => { router.push("/dashboard/tests") }} className="tooltip tooltip-right" data-tip="Users Tests">
+                        <ExamIcon size={24} />
                     </a>
                 </li>
                 <li>

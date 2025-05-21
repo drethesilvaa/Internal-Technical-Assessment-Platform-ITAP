@@ -3,6 +3,7 @@ import { CreateStackDto } from './dto/create-stack.dto';
 import { Stack } from 'src/entities/stack.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateStackDto } from './dto/update-stack.dto';
 
 @Injectable()
 export class StacksService {
@@ -22,6 +23,11 @@ export class StacksService {
 
   findOne(id: string) {
     return this.stackRepo.findOne({ where: { id } });
+  }
+
+  async update(id: string, dto: UpdateStackDto) {
+    await this.stackRepo.update(id, dto);
+    return this.findOne(id);
   }
 
   async remove(id: string) {
