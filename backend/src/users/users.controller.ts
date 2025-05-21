@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,11 +30,18 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':email')
+  @Get('email/:email')
   @Roles('admin')
   @ApiOperation({ summary: 'Get user by email' })
   findByEmail(@Query('email') email: string) {
     return this.usersService.findByEmail(email);
+  }
+
+  @Get(':id')
+  @Roles('admin')
+  @ApiOperation({ summary: 'Get user by id' })
+  findById(@Param('id') id: string) {
+    return this.usersService.findById(id);
   }
 
   @Post()
@@ -41,6 +49,13 @@ export class UsersController {
   @ApiOperation({ summary: 'Create a new user' })
   create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
+  }
+
+  @Delete(':id')
+  @Roles('admin')
+  @ApiOperation({ summary: 'Delete a user by ID' })
+  delete(@Param('id') id: string) {
+    return this.usersService.delete(id);
   }
 
   @Patch(':id')
