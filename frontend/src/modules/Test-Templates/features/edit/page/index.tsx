@@ -42,12 +42,10 @@ export default function EditTemplatePage() {
             onSubmit={(values) => updateTemplate(values)}
             onDelete={() => deleteTemplate()}
             stacks={stacks}
-            questions={questions}
             initialValues={{
                 name: template.name,
                 difficulty: template.difficulty,
-                stackId: template.stack.id,
-                questionIds: template.questions.map((q: any) => q.id),
+                stackIds: template.stacks.map((s: any) => s.id),
             }}
         />
     );

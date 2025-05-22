@@ -36,7 +36,7 @@ export const Questions = () => {
                                     {t.type}
                                     {/* <span className="badge badge-ghost badge-sm">Desktop Support Technician</span> */}
                                 </td>
-                                <td>{t.stackId?.name}</td>
+                                <td>{t.stack?.name}</td>
                                 <td>{t.difficulty}</td>
                                 <td>{t.points}</td>
                                 <th>

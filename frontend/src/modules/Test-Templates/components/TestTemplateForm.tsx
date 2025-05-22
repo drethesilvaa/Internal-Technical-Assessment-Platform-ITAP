@@ -1,5 +1,6 @@
 'use client';
 
+import CheckboxField from '@/components/CheckboxField';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -7,22 +8,21 @@ interface TemplateFormProps {
     initialValues: {
         name: string;
         difficulty: 'junior' | 'intermediate' | 'senior';
-        stackId: string;
-        questionIds: string[];
+        stackIds: string[];
     };
     isPending?: boolean;
     onSubmit: (values: TemplateFormProps['initialValues']) => void;
     onDelete?: () => void;
     stacks: { id: string; name: string }[];
-    questions: { id: string; content: string }[];
     mode?: 'create' | 'edit';
 }
 
 const schema = Yup.object({
-    name: Yup.string().required(),
-    difficulty: Yup.string().oneOf(['junior', 'intermediate', 'senior']).required(),
-    stackId: Yup.string().required(),
-    questionIds: Yup.array().of(Yup.string().required()).min(1),
+    name: Yup.string().required('Template name is required'),
+    difficulty: Yup.string()
+        .oneOf(['junior', 'intermediate', 'senior'], 'Invalid difficulty')
+        .required('Difficulty is required'),
+    stackIds: Yup.array().of(Yup.string().required()).min(1, 'At least one stack is required'),
 });
 
 export const TestTemplateForm = ({
@@ -31,7 +31,6 @@ export const TestTemplateForm = ({
     onSubmit,
     onDelete,
     stacks,
-    questions,
     mode = 'create',
 }: TemplateFormProps) => {
     return (
@@ -69,28 +68,16 @@ export const TestTemplateForm = ({
                         </Field>
                         <ErrorMessage name="difficulty" component="div" className="text-red-500 text-sm" />
 
-                        <Field as="select" name="stackId" className="select select-bordered w-full">
-                            <option value="" disabled>
-                                Select Stack
-                            </option>
-                            {stacks.map((stack) => (
-                                <option key={stack.id} value={stack.id}>
-                                    {stack.name}
-                                </option>
-                            ))}
-                        </Field>
-                        <ErrorMessage name="stackId" component="div" className="text-red-500 text-sm" />
-
                         <div>
-                            <label className="font-semibold block mb-2">Select Questions</label>
-                            <Field as="select" name="questionIds" multiple className="select select-bordered w-full h-40">
-                                {questions.map((q) => (
-                                    <option key={q.id} value={q.id}>
-                                        {q.content}
-                                    </option>
+                            <label className="font-semibold block mb-2">Select Stack(s)</label>
+                            <div className="flex flex-col gap-2">
+                                {stacks.map((stack) => (
+                                    <CheckboxField name="stackIds" value={stack.id} key={stack.id}>
+                                        {stack.name}
+                                    </CheckboxField>
                                 ))}
-                            </Field>
-                            <ErrorMessage name="questionIds" component="div" className="text-red-500 text-sm" />
+                            </div>
+                            <ErrorMessage name="stackIds" component="div" className="text-red-500 text-sm" />
                         </div>
 
                         <div className="mt-6 flex justify-between">

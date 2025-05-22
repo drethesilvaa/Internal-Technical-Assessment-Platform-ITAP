@@ -20,7 +20,7 @@ export class TemplatesController {
   constructor(private readonly service: TemplatesService) {}
 
   @Post()
-  @Roles('reviewer')
+  @Roles('reviewer', 'admin')
   @ApiOperation({ summary: 'Create a test template with questions' })
   create(@Body() dto: CreateTemplateDto, @Request() req) {
     return this.service.createTemplate(dto, req.user);

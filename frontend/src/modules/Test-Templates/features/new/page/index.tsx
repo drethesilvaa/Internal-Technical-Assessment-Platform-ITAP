@@ -27,12 +27,10 @@ export default function TestTemplateNew() {
             isPending={isPending}
             onSubmit={(values) => mutate(values)}
             stacks={stacks}
-            questions={questions}
             initialValues={{
                 name: '',
                 difficulty: 'junior',
-                stackId: '',
-                questionIds: [],
+                stackIds:[]
             }}
         />
     );
