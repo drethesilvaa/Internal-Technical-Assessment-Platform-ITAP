@@ -11,9 +11,6 @@ export class Stack {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => TestTemplate, (template) => template.stack)
-  templates: TestTemplate[];
-
   @OneToMany(() => TestAssignment, (assignment) => assignment.stack)
   assignments: TestAssignment[];
 }

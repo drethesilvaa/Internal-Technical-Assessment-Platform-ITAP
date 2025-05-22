@@ -12,6 +12,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { SharedModule } from './shared/shared.module';
 import { StacksModule } from './stacks/stacks.module';
 import { QuestionsModule } from './questions/questions.module';
+import { PointsConfigModule } from './points-config/points-config.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { QuestionsModule } from './questions/questions.module';
     ResultsModule,
     QuestionsModule,
     NotificationsModule,
+    PointsConfigModule,
     SharedModule,
     StacksModule,
   ],

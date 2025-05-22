@@ -33,12 +33,7 @@ export class Question {
   correctAnswer: string;
 
   @ManyToOne(() => Stack, { eager: true })
-  stackId: Stack;
-
-  @ManyToOne(() => TestTemplate, (template) => template.questions, {
-    nullable: true,
-  })
-  template: TestTemplate;
+  stack: Stack;
 
   @OneToMany(() => QuestionOption, (option) => option.question, {
     cascade: true,

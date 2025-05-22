@@ -1,28 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsArray, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CreateQuestionDto } from '../../questions/dto/create-question.dto';
-
+import {
+  IsString,
+  IsArray,
+  IsIn,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export type DifficultyLevel = 'junior' | 'intermediate' | 'senior';
 
-
 export class CreateTemplateDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'Frontend Test' })
   @IsString()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'junior',
+    enum: ['junior', 'intermediate', 'senior'],
+  })
   @IsString()
-  stackId: string;
+  @IsIn(['junior', 'intermediate', 'senior'])
+  difficulty: 'junior' | 'intermediate' | 'senior';
 
-  @ApiProperty({ enum: ['junior', 'intermediate', 'senior'] })
-  @IsString()
-  difficulty: DifficultyLevel;
-
-  @ApiProperty({ type: [CreateQuestionDto] })
+  @ApiProperty({ example: ['uuid-stack-1', 'uuid-stack-2'], type: [String] })
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateQuestionDto)
-  questions: CreateQuestionDto[];
+  @ArrayNotEmpty()
+  stackIds: string[];
 }

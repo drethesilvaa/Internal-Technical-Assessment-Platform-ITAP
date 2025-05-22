@@ -4,6 +4,8 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Question } from './question.entity';
@@ -20,8 +22,9 @@ export class TestTemplate {
   @Column()
   name: string;
 
-  @ManyToOne(() => Stack, (stack) => stack.templates, { eager: true })
-  stack: Stack;
+  @ManyToMany(() => Stack)
+  @JoinTable()
+  stacks: Stack[];
 
   @Column()
   difficulty: DifficultyLevel;
@@ -29,6 +32,7 @@ export class TestTemplate {
   @ManyToOne(() => User, (user) => user.createdTemplates)
   createdBy: User;
 
-  @OneToMany(() => Question, (question) => question.template)
+  @ManyToMany(() => Question)
+  @JoinTable()
   questions: Question[];
 }
