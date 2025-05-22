@@ -11,6 +11,7 @@ import { ResultsModule } from './results/results.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SharedModule } from './shared/shared.module';
 import { StacksModule } from './stacks/stacks.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { StacksModule } from './stacks/stacks.module';
     AssignmentsModule,
     TestsModule,
     ResultsModule,
+    QuestionsModule,
     NotificationsModule,
     SharedModule,
     StacksModule,

@@ -1,27 +1,45 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { TestTemplate } from './test-template.entity';
-import { Exclude } from 'class-transformer';
-
-export type QuestionType = 'code' | 'mcq' | 'text';
+import { QuestionOption } from './question-option.entity';
+import { Stack } from './stack.entity';
 
 @Entity()
 export class Question {
   @PrimaryGeneratedColumn('uuid')
-  @Exclude()
   id: string;
 
-  @ManyToOne(() => TestTemplate, (template) => template.questions)
-  template: TestTemplate;
+  @Column()
+  content: string;
 
   @Column()
-  type: QuestionType;
+  type: 'code' | 'mcq' | 'text';
 
   @Column()
-  difficulty: string;
+  difficulty: 'easy' | 'medium' | 'hard';
 
   @Column()
   points: number;
 
-  @Column('text')
-  content: string;
+  @Column({ type: 'text', nullable: true }) // used for text/code
+  correctAnswer: string;
+
+  @ManyToOne(() => Stack, { eager: true })
+  stack: Stack;
+
+  @ManyToOne(() => TestTemplate, (template) => template.questions, {
+    nullable: true,
+  })
+  template: TestTemplate;
+
+  @OneToMany(() => QuestionOption, (option) => option.question, {
+    cascade: true,
+    eager: true,
+  })
+  options: QuestionOption[];
 }

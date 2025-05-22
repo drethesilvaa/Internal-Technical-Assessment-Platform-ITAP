@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateQuestionDto } from './create-question.dto';
+import { CreateQuestionDto } from '../../questions/dto/create-question.dto';
 
 
 export type DifficultyLevel = 'junior' | 'intermediate' | 'senior';
