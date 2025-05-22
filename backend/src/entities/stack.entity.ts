@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { TestTemplate } from './test-template.entity';
 import { TestAssignment } from './test-assignment.entity';
+import { Question } from './question.entity';
 
 @Entity()
 export class Stack {

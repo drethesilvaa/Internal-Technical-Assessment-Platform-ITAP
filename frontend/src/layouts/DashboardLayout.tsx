@@ -9,8 +9,8 @@ export const DashboardLayout = ({ children }: any) => {
 
 
     return (
-        <div className="flex h-screen">
-            <ul className="menu bg-secondary h-full gap-2">
+        <div className="flex min-h-screen h-full">
+            <ul className="menu bg-secondary min-h-screen gap-2">
                 <li>
                     <a onClick={() => { router.push("/dashboard") }} className="tooltip tooltip-right" data-tip="Home">
                         <HouseIcon size={24} />
@@ -47,7 +47,7 @@ export const DashboardLayout = ({ children }: any) => {
                     </a>
                 </li>
             </ul>
-            <div className="bg-[#efede8] w-full h-full">
+            <div className="bg-[#efede8] w-full min-h-screen h-full">
                 <div className="navbar bg-transparent">
                     <div className="navbar-start text-neutral ">
                         <a className="btn btn-ghost text-xl">Dashboard</a>

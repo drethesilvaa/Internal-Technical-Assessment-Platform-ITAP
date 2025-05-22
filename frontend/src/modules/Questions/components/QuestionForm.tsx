@@ -44,6 +44,7 @@ export const QuestionForm = ({
     useEffect(() => {
         setType(initialValues.type);
     }, [initialValues]);
+    
 
     return (
         <Formik
@@ -54,7 +55,11 @@ export const QuestionForm = ({
             {({ values, isValid, dirty, setFieldValue }) => (
                 <Form className="flex flex-col gap-4 max-w-xl">
                     <label className="input input-bordered flex items-center gap-2">
-                        <Field name="content" placeholder="Question content" className="grow" />
+                        <Field name="title" placeholder="Question Title" className="grow" />
+                    </label>
+                    
+                    <label className=" flex items-center gap-2">
+                        <Field as="textarea" name="content" placeholder="Question content" className="grow textarea" />
                     </label>
 
                     <Field as="select" name="type" className="select select-bordered" onChange={(e: any) => {
@@ -109,7 +114,7 @@ export const QuestionForm = ({
                         <Field
                             name="correctAnswer"
                             placeholder="Correct answer"
-                            className="input input-bordered"
+                            className="textarea"
                             as="textarea"
                         />
                     )}
@@ -125,7 +130,7 @@ export const QuestionForm = ({
                         {mode === 'edit' && onDelete && (
                             <button
                                 type="button"
-                                className="btn btn-outline btn-error mt-2"
+                                className="btn btn-outline btn-error"
                                 onClick={onDelete}
                             >
                                 Delete Question

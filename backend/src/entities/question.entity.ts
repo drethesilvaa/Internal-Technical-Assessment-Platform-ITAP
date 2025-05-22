@@ -15,6 +15,9 @@ export class Question {
   id: string;
 
   @Column()
+  title: string;
+  
+  @Column()
   content: string;
 
   @Column()
@@ -30,7 +33,7 @@ export class Question {
   correctAnswer: string;
 
   @ManyToOne(() => Stack, { eager: true })
-  stack: Stack;
+  stackId: Stack;
 
   @ManyToOne(() => TestTemplate, (template) => template.questions, {
     nullable: true,

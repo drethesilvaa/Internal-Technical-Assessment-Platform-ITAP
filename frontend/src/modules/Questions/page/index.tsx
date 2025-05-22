@@ -21,7 +21,9 @@ export const Questions = () => {
                 <table className="table">
                     <thead>
                         <tr>
+                            <th>Title</th>
                             <th>Type</th>
+                            <th>Stack</th>
                             <th>Difficulty</th>
                             <th>Points</th>
                         </tr>
@@ -29,14 +31,16 @@ export const Questions = () => {
                     <tbody>
                         {questions.map((t: any, k: number) => (
                             <tr key={k}>
+                                <td>{t.title}</td>
                                 <td>
                                     {t.type}
                                     {/* <span className="badge badge-ghost badge-sm">Desktop Support Technician</span> */}
                                 </td>
+                                <td>{t.stackId?.name}</td>
                                 <td>{t.difficulty}</td>
                                 <td>{t.points}</td>
                                 <th>
-                                    <button className="btn btn-ghost btn-xs" onClick={() => router.push(`questions/${t.id}`)}>details</button>
+                                    <button className="btn btn-ghost btn-xs" onClick={() => router.push(`questions/edit/${t.id}`)}>details</button>
                                 </th>
                             </tr>
 
@@ -44,7 +48,9 @@ export const Questions = () => {
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th>Title</th>
                             <th>Type</th>
+                            <th>Stack</th>
                             <th>Difficulty</th>
                             <th>Points</th>
                         </tr>

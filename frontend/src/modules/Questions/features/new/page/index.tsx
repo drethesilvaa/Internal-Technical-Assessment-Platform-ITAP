@@ -10,6 +10,7 @@ export default function NewQuestion() {
             <h1 className="text-xl font-bold mb-4">Create New Question</h1>
             <QuestionForm
                 initialValues={{
+                    title: "",
                     content: '',
                     type: 'mcq',
                     difficulty: 'easy',
