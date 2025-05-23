@@ -44,7 +44,7 @@ export const QuestionForm = ({
     useEffect(() => {
         setType(initialValues.type);
     }, [initialValues]);
-    
+
 
     return (
         <Formik
@@ -54,39 +54,53 @@ export const QuestionForm = ({
         >
             {({ values, isValid, dirty, setFieldValue }) => (
                 <Form className="flex flex-col gap-4 max-w-xl">
-                    <label className="input input-bordered flex items-center gap-2">
-                        <Field name="title" placeholder="Question Title" className="grow" />
-                    </label>
-                    
-                    <label className=" flex items-center gap-2">
-                        <Field as="textarea" name="content" placeholder="Question content" className="grow textarea" />
+                    <label className="input input-bordered flex items-center gap-2 w-full">
+                        Question Title
+                        <Field name="title" placeholder="Title" className="grow" />
                     </label>
 
-                    <Field as="select" name="type" className="select select-bordered" onChange={(e: any) => {
-                        setFieldValue('type', e.target.value);
-                        setType(e.target.value);
-                    }}>
-                        <option value="mcq">Multiple Choice</option>
-                        <option value="text">Text Answer</option>
-                        <option value="code">Code</option>
-                    </Field>
+                    <label className="textarea flex items-start gap-2 w-full">
+                        Question content
+                        <Field as="textarea" name="content" placeholder="Content" className="grow textarea" />
+                    </label>
 
-                    <Field as="select" name="difficulty" className="select select-bordered">
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </Field>
+                    <label className=" flex items-center gap-2 w-full">
+                        Question Type
+                        <Field as="select" name="type" className="select select-bordered" onChange={(e: any) => {
+                            setFieldValue('type', e.target.value);
+                            setType(e.target.value);
+                        }}>
+                            <option value="mcq">Multiple Choice</option>
+                            <option value="text">Text Answer</option>
+                            <option value="code">Code</option>
+                        </Field>
+                    </label>
 
-                    <Field type="number" name="points" placeholder="Points" className="input input-bordered" />
+                    <label className=" flex items-center gap-2 w-full">
+                        Question Difficulty
+                        <Field as="select" name="difficulty" className="select select-bordered">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </Field>
+                    </label>
 
-                    <Field as="select" name="stackId" className="select select-bordered">
-                        <option value="">Select a stack</option>
-                        {stacks?.map((s: any) => (
-                            <option key={s.id} value={s.id}>
-                                {s.name}
-                            </option>
-                        ))}
-                    </Field>
+                    <label className=" flex items-center gap-2 w-full">
+                        Points
+                        <Field type="number" name="points" placeholder="Points" className="input input-bordered" />
+                    </label>
+
+                    <label className=" flex items-center gap-2 w-full">
+                        Stack
+                        <Field as="select" name="stackId" className="select select-bordered">
+                            <option value="">Select a stack</option>
+                            {stacks?.map((s: any) => (
+                                <option key={s.id} value={s.id}>
+                                    {s.name}
+                                </option>
+                            ))}
+                        </Field>
+                    </label>
 
                     {type === 'mcq' && (
                         <FieldArray name="options">

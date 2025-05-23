@@ -6,6 +6,13 @@ import { useState } from "react";
 import { usePatchPointsConfig } from "../hooks/usePatchPointsConfig";
 import { PointsConfigForm } from "../components/PointsConfigForm";
 
+export interface PointsConfig {
+    id?: string
+    level: string
+    minQuestions: number
+    totalPoints: number
+}
+
 export const PointsConfig = () => {
 
     const { data: pointsConfig, isLoading, isError, refetch } = useGetPointsConfig();
@@ -14,17 +21,17 @@ export const PointsConfig = () => {
     const { mutate: updatePointsConfig, isPending: isUpdating } = usePatchPointsConfig(refetch);
 
     const [editMode, setEditMode] = useState(false);
-    const [selectedStack, setSelectedStack] = useState<{ id: string; name: string } | null>(null);
+    const [selectedConfig, setSelectedConfig] = useState<PointsConfig | null>(null);
 
     const openCreateModal = () => {
         setEditMode(false);
-        setSelectedStack(null);
+        setSelectedConfig(null);
         document.getElementById('dialogCreatePointsConfig')?.showModal();
     };
 
-    const openEditModal = (stack: { id: string; name: string }) => {
+    const openEditModal = (config: PointsConfig) => {
         setEditMode(true);
-        setSelectedStack(stack);
+        setSelectedConfig(config);
         document.getElementById('dialogCreatePointsConfig')?.showModal();
     };
 
@@ -84,10 +91,14 @@ export const PointsConfig = () => {
                     <PointsConfigForm
                         mode={editMode ? 'edit' : 'create'}
                         isPending={editMode ? isUpdating : isCreating}
-                        initialValues={{ name: selectedStack?.name || '' }}
-                        onSubmit={(values: any) => {
-                            if (editMode && selectedStack) {
-                                updatePointsConfig({ id: selectedStack.id, ...values });
+                        initialValues={selectedConfig?.id ? { ...selectedConfig } : {
+                            level: "",
+                            minQuestions: 0,
+                            totalPoints: 0
+                        }}
+                        onSubmit={(values: PointsConfig) => {
+                            if (editMode && selectedConfig) {
+                                updatePointsConfig({ ...values });
                             } else {
                                 createPointsConfig(values);
                             }
