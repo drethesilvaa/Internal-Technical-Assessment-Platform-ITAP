@@ -6,4 +6,4 @@ Tables Filters and Pagination
 Change test templates - admin selects stack and the system give random questions according to difficulty
 
 
-points config CRUD
+points config CRUD - done 

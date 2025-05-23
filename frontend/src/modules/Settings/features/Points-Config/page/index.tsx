@@ -26,13 +26,13 @@ export const PointsConfig = () => {
     const openCreateModal = () => {
         setEditMode(false);
         setSelectedConfig(null);
-        document.getElementById('dialogCreatePointsConfig')?.showModal();
+        (document.getElementById('dialogCreatePointsConfig') as HTMLDialogElement)?.showModal();
     };
 
     const openEditModal = (config: PointsConfig) => {
         setEditMode(true);
         setSelectedConfig(config);
-        document.getElementById('dialogCreatePointsConfig')?.showModal();
+        (document.getElementById('dialogCreatePointsConfig') as HTMLDialogElement)?.showModal();
     };
 
     const router = useRouter()

@@ -21,13 +21,13 @@ export const Stacks = () => {
     const openCreateModal = () => {
         setEditMode(false);
         setSelectedStack(null);
-        document.getElementById('dialogCreateStack')?.showModal();
+        (document.getElementById('dialogCreateStack') as HTMLDialogElement)?.showModal();
     };
 
     const openEditModal = (stack: { id: string; name: string }) => {
         setEditMode(true);
         setSelectedStack(stack);
-        document.getElementById('dialogCreateStack')?.showModal();
+        (document.getElementById('dialogCreateStack') as HTMLDialogElement)?.showModal();
     };
 
     const router = useRouter()
@@ -91,7 +91,7 @@ export const Stacks = () => {
                                 ? () => {
                                     deleteStack(selectedStack.id, {
                                         onSuccess: () => {
-                                            document.getElementById('dialogCreateStack')?.close();
+                                            (document.getElementById('dialogCreateStack') as HTMLDialogElement)?.close();
                                             alert('Stack deleted!');
                                         },
                                     });

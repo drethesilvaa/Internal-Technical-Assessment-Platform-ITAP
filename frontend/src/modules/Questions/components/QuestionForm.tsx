@@ -4,13 +4,14 @@ import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { useGetStacks } from '@/modules/Settings/features/Stacks/hooks/useGetStacks';
+import TiptapEditor from '@/components/TipTapEditor';
 
 const validationSchema = Yup.object({
     content: Yup.string().required(),
     type: Yup.string().oneOf(['mcq', 'code', 'text']).required(),
     difficulty: Yup.string().oneOf(['easy', 'medium', 'hard']).required(),
     points: Yup.number().required(),
-    stackId: Yup.string().required(),
+    stack: Yup.string().required(),
     correctAnswer: Yup.string().when('type', {
         is: (val: string) => val === 'text' || val === 'code',
         then: (schema) => schema.required('Required'),
@@ -53,16 +54,20 @@ export const QuestionForm = ({
             onSubmit={onSubmit}
         >
             {({ values, isValid, dirty, setFieldValue }) => (
-                <Form className="flex flex-col gap-4 max-w-xl">
+                <Form className="flex flex-col gap-4">
                     <label className="input input-bordered flex items-center gap-2 w-full">
                         Question Title
                         <Field name="title" placeholder="Title" className="grow" />
                     </label>
 
-                    <label className="textarea flex items-start gap-2 w-full">
+                    <label className="flex items-start gap-2 w-full">
                         Question content
-                        <Field as="textarea" name="content" placeholder="Content" className="grow textarea" />
+                        <div className='w-full'>
+                            <Field component={TiptapEditor} name="content" />
+                        </div>
+
                     </label>
+
 
                     <label className=" flex items-center gap-2 w-full">
                         Question Type
@@ -92,7 +97,7 @@ export const QuestionForm = ({
 
                     <label className=" flex items-center gap-2 w-full">
                         Stack
-                        <Field as="select" name="stackId" className="select select-bordered">
+                        <Field as="select" name="stack" className="select select-bordered">
                             <option value="">Select a stack</option>
                             {stacks?.map((s: any) => (
                                 <option key={s.id} value={s.id}>

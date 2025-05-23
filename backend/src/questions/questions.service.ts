@@ -31,8 +31,12 @@ export class QuestionsService {
   }
 
   async update(id: string, dto: UpdateQuestionDto) {
-    await this.questionRepo.update(id, dto);
-    return this.findOne(id);
+    const question = await this.questionRepo.findOne({ where: { id } });
+    if (!question) throw new NotFoundException('Question not found');
+
+    Object.assign(question, dto);
+    return this.questionRepo.save(question);
+
   }
 
   async remove(id: string) {
