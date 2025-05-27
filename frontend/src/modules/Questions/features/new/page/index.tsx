@@ -17,7 +17,7 @@ export default function NewQuestion() {
                     points: 1,
                     correctAnswer: '',
                     options: [],
-                    stackId: '',
+                    stack: '',
                 }}
                 isPending={isPending}
                 onSubmit={(data) => mutate(data)}

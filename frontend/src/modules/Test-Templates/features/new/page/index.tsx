@@ -11,11 +11,6 @@ export default function TestTemplateNew() {
 
     const { data: stacks = [] } = useGetStacks()
 
-    const { data: questions = [] } = useQuery({
-        queryKey: ['questions'],
-        queryFn: () => api.get('/questions').then((res) => res.data),
-    });
-
     const { mutate, isPending } = useMutation({
         mutationFn: (payload: any) => api.post('/templates', payload),
         onSuccess: () => router.push('/dashboard/templates'),

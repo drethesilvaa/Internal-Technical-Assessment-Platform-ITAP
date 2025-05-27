@@ -23,7 +23,7 @@ export default function EditQuestion() {
                 mode="edit"
                 initialValues={{
                     ...question,
-                    stackId: question.stack?.id ?? '',
+                    stack: question.stack?.id ?? '',
                 }}
                 isPending={isPending}
                 onSubmit={(data) => update(data)}

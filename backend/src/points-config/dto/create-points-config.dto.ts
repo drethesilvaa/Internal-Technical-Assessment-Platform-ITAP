@@ -1,4 +1,4 @@
-import { IsIn, IsInt, Min } from 'class-validator';
+import { IsDecimal, IsIn, IsInt, Min } from 'class-validator';
 
 export class CreatePointsConfigDto {
   @IsIn(['junior', 'intermediate', 'senior'])
@@ -11,4 +11,16 @@ export class CreatePointsConfigDto {
   @IsInt()
   @Min(1)
   minQuestions: number;
+
+  @IsDecimal()
+  @Min(0.1)
+  easyQuestionsPercentage: number;
+
+  @IsDecimal()
+  @Min(0.1)
+  mediumQuestionsPercentage: number;
+
+  @IsDecimal()
+  @Min(0.1)
+  hardQuestionsPercentage: number;
 }

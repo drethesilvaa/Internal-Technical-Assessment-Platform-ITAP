@@ -72,7 +72,7 @@ export const TestTemplateForm = ({
                             <label className="font-semibold block mb-2">Select Stack(s)</label>
                             <div className="flex flex-col gap-2">
                                 {stacks.map((stack) => (
-                                    <CheckboxField name="stackIds" value={stack.id} key={stack.id}>
+                                    <CheckboxField disabled={mode === "edit"} name="stackIds" value={stack.id} key={stack.id}>
                                         {stack.name}
                                     </CheckboxField>
                                 ))}

@@ -17,8 +17,34 @@ interface PointsConfigFormProps {
 const pointsConfigSchema = Yup.object({
     level: Yup.string().required('Config Name is required'),
     minQuestions: Yup.number().required('Minimum Questions is required'),
-    totalPoints: Yup.number().required('Total Points is required')
-});
+    totalPoints: Yup.number().required('Total Points is required'),
+
+    easyQuestionsPercentage: Yup.number()
+        .required('Easy Questions Percentage is required')
+        .min(0)
+        .max(100),
+
+    mediumQuestionsPercentage: Yup.number()
+        .required('Medium Questions Percentage is required')
+        .min(0)
+        .max(100),
+
+    hardQuestionsPercentage: Yup.number()
+        .required('Hard Questions Percentage is required')
+        .min(0)
+        .max(100),
+}).test(
+    'percentages-sum',
+    'Sum of percentages must be exactly 100',
+    (values) => {
+        if (!values) return false;
+        const sum =
+            (values.easyQuestionsPercentage || 0) +
+            (values.mediumQuestionsPercentage || 0) +
+            (values.hardQuestionsPercentage || 0);
+        return sum === 100;
+    }
+);
 
 export const PointsConfigForm = ({
     initialValues,
@@ -76,6 +102,39 @@ export const PointsConfigForm = ({
                             />
                         </label>
                         <ErrorMessage name="minQuestions" component="div" className="text-red-500 text-sm" />
+
+                        <label className="input input-bordered flex items-center gap-2">
+                            Easy Percentage
+                            <Field
+                                name="easyQuestionsPercentage"
+                                type="number"
+                                placeholder="e.g. 10%,20%,30%"
+                                className="grow"
+                            />
+                        </label>
+                        <ErrorMessage name="easyQuestionsPercentage" component="div" className="text-red-500 text-sm" />
+
+                        <label className="input input-bordered flex items-center gap-2">
+                            Medium Percentage
+                            <Field
+                                name="mediumQuestionsPercentage"
+                                type="number"
+                                placeholder="e.g. 10%,20%,30%"
+                                className="grow"
+                            />
+                        </label>
+                        <ErrorMessage name="mediumQuestionsPercentage" component="div" className="text-red-500 text-sm" />
+
+                        <label className="input input-bordered flex items-center gap-2">
+                            Hard Percentage
+                            <Field
+                                name="hardQuestionsPercentage"
+                                type="number"
+                                placeholder="e.g. 10%,20%,30%"
+                                className="grow"
+                            />
+                        </label>
+                        <ErrorMessage name="hardQuestionsPercentage" component="div" className="text-red-500 text-sm" />
 
 
                         <div className="flex gap-4 mt-4">

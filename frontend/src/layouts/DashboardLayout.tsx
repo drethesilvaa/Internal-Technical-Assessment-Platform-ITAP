@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb/Breadcrumb";
 import { useAuth } from "@/context/AuthContext";
 import { BellIcon, ExamIcon, GearFineIcon, HouseIcon, MagnifyingGlassIcon, QuestionMarkIcon, SignOutIcon, StackIcon, UsersFourIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
@@ -17,11 +18,6 @@ export const DashboardLayout = ({ children }: any) => {
                     </a>
                 </li>
                 <li>
-                    <a onClick={() => { router.push("/dashboard/users") }} className="tooltip tooltip-right" data-tip="Users">
-                        <UsersFourIcon size={24} />
-                    </a>
-                </li>
-                <li>
                     <a onClick={() => { router.push("/dashboard/test-templates") }} className="tooltip tooltip-right" data-tip="Test Templates">
                         <StackIcon size={24} />
                     </a>
@@ -37,6 +33,11 @@ export const DashboardLayout = ({ children }: any) => {
                     </a>
                 </li>
                 <li>
+                    <a onClick={() => { router.push("/dashboard/users") }} className="tooltip tooltip-right" data-tip="Users">
+                        <UsersFourIcon size={24} />
+                    </a>
+                </li>
+                <li>
                     <a onClick={() => { router.push("/dashboard/settings") }} className="tooltip tooltip-right" data-tip="Settings">
                         <GearFineIcon size={24} />
                     </a>
@@ -48,9 +49,9 @@ export const DashboardLayout = ({ children }: any) => {
                 </li>
             </ul>
             <div className="bg-[#efede8] w-full min-h-screen h-full">
-                <div className="navbar bg-transparent">
+                <div className="navbar px-7 bg-transparent">
                     <div className="navbar-start text-neutral ">
-                        <a className="btn btn-ghost text-xl">Dashboard</a>
+                        <Breadcrumb />
                     </div>
 
                     <div className="navbar-end gap-2">

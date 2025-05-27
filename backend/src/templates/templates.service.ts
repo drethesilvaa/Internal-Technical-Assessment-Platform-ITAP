@@ -7,6 +7,8 @@ import { Stack } from '../entities/stack.entity';
 import { PointsConfig } from '../entities/points-config.entity';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { User } from '../entities/user.entity';
+import { instanceToPlain } from 'class-transformer';
+import { UpdateTemplateDto } from './dto/update-template.dto';
 
 @Injectable()
 export class TemplatesService {
@@ -24,7 +26,7 @@ export class TemplatesService {
   async createTemplate(dto: CreateTemplateDto, createdBy: User) {
     const stacks = await this.stackRepo.findBy({ id: In(dto.stackIds) });
     if (stacks.length === 0) throw new NotFoundException('Stacks not found');
-    
+
     const config = await this.pointsConfigRepo.findOne({
       where: { level: dto.difficulty },
     });
@@ -37,16 +39,14 @@ export class TemplatesService {
     const filtered: Question[] = [];
     let currentPoints = 0;
 
-    const weights = {
-      junior: { easy: 0.6, medium: 0.4, hard: 0 },
-      intermediate: { easy: 0.4, medium: 0.4, hard: 0.2 },
-      senior: { easy: 0.2, medium: 0.3, hard: 0.5 },
-    };
-
     const target = {
       total: config.totalPoints,
       min: config.minQuestions,
-      byDiff: weights[dto.difficulty],
+      byDiff: {
+        easy: config.easyQuestionsPercentage / 100,
+        medium: config.mediumQuestionsPercentage / 100,
+        hard: config.hardQuestionsPercentage / 100,
+      },
     };
 
     const groupByDifficulty = (diff: string) =>
@@ -84,9 +84,30 @@ export class TemplatesService {
     return this.templateRepo.save(template);
   }
 
-  getAllTemplates() {
-    return this.templateRepo.find({
-      relations: ['questions', 'stacks'],
+  async update(id: string, dto: UpdateTemplateDto) {
+    const template = await this.templateRepo.findOne({ where: { id } });
+    if (!template) throw new NotFoundException('Template not found');
+
+    Object.assign(template, dto);
+    return this.templateRepo.save(template);
+  }
+
+  async getAllTemplates() {
+    const templates = await this.templateRepo.find({
+      // relations: ['questions', 'stacks', 'createdBy'],
+      relations: ['stacks', 'createdBy'],
     });
+
+    return templates.map((template) => instanceToPlain(template));
+  }
+
+  findOne(id: string) {
+    return this.templateRepo.findOne({ where: { id }, relations: ['stacks'] });
+  }
+
+  async remove(id: string) {
+    const template = await this.findOne(id);
+    if (!template) throw new NotFoundException();
+    return this.templateRepo.remove(template);
   }
 }

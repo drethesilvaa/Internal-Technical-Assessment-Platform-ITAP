@@ -38,7 +38,7 @@ export const PointsConfig = () => {
     const router = useRouter()
 
     if (isLoading) return <p>Loading...</p>;
-    if (isError) return <p>Failed to load stacks</p>;
+    if (isError) return <p>Failed to load points config</p>;
 
     return (
         <>
@@ -55,6 +55,9 @@ export const PointsConfig = () => {
                             <th>Nivel</th>
                             <th>Total de Pontos</th>
                             <th>Minimo de Questões</th>
+                            <th>Facil</th>
+                            <th>Médio</th>
+                            <th>Dificil</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +72,15 @@ export const PointsConfig = () => {
                                 <td>
                                     {p.minQuestions}
                                 </td>
+                                <td>
+                                    {p.easyQuestionsPercentage}
+                                </td>
+                                <td>
+                                    {p.mediumQuestionsPercentage}
+                                </td>
+                                <td>
+                                    {p.hardQuestionsPercentage}
+                                </td>
                             </tr>
 
                         ))}
@@ -78,6 +90,9 @@ export const PointsConfig = () => {
                             <th>Nivel</th>
                             <th>Total de Pontos</th>
                             <th>Minimo de Questões</th>
+                            <th>Facil</th>
+                            <th>Médio</th>
+                            <th>Dificil</th>
                         </tr>
                     </tfoot>
                 </table>

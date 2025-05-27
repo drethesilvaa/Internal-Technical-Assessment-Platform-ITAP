@@ -4,9 +4,10 @@ interface CheckboxFieldProps {
     name: string;
     value: string;
     children: React.ReactNode;
+    disabled: boolean
 }
 
-const CheckboxField = ({ name, value, children }: CheckboxFieldProps) => {
+const CheckboxField = ({ name, value, children, disabled }: CheckboxFieldProps) => {
     const { values, setFieldValue } = useFormikContext<any>();
     const [field] = useField({ name, value, type: 'checkbox' });
 
@@ -24,6 +25,7 @@ const CheckboxField = ({ name, value, children }: CheckboxFieldProps) => {
     return (
         <label className="inline-flex items-center gap-2">
             <input
+                disabled={disabled}
                 type="checkbox"
                 name={name}
                 value={value}

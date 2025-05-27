@@ -43,13 +43,13 @@ export const TestTemplates = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    {t.stack}
+                                    {t.stacks.map((stack: any) => (stack.name))}
                                     {/* <span className="badge badge-ghost badge-sm">Desktop Support Technician</span> */}
                                 </td>
                                 <td>{t.difficulty}</td>
-                                <td>{t.createdById}</td>
+                                <td>{t.createdBy?.name}</td>
                                 <th>
-                                    <button className="btn btn-ghost btn-xs" onClick={() => router.push(`test-templates/${t.id}`)}>details</button>
+                                    <button className="btn btn-ghost btn-xs" onClick={() => router.push(`test-templates/edit/${t.id}`)}>details</button>
                                 </th>
                             </tr>
 

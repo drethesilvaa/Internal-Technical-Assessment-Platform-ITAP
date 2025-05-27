@@ -13,11 +13,6 @@ export default function EditTemplatePage() {
 
     const { data: stacks = [] } = useGetStacks()
 
-    const { data: questions = [] } = useQuery({
-        queryKey: ['questions'],
-        queryFn: () => api.get('/questions').then((res) => res.data),
-    });
-
     const { data: template, isLoading } = useQuery({
         queryKey: ['template', templateId],
         queryFn: () => api.get(`/templates/${templateId}`).then((res) => res.data),
@@ -25,12 +20,12 @@ export default function EditTemplatePage() {
 
     const { mutate: updateTemplate, isPending } = useMutation({
         mutationFn: (values: any) => api.patch(`/templates/${templateId}`, values),
-        onSuccess: () => router.push('/dashboard/templates'),
+        onSuccess: () => router.push('/dashboard/test-templates'),
     });
 
     const { mutate: deleteTemplate } = useMutation({
         mutationFn: () => api.delete(`/templates/${templateId}`),
-        onSuccess: () => router.push('/dashboard/templates'),
+        onSuccess: () => router.push('/dashboard/test-templates'),
     });
 
     if (isLoading || !template) return <p>Loading...</p>;

@@ -12,5 +12,16 @@ export class PointsConfig {
   totalPoints: number;
 
   @Column()
-  minQuestions: number;
+  minQuestions: number; 
+  
+  @Column()
+  easyQuestionsPercentage: number;
+
+  @Column()
+  mediumQuestionsPercentage: number;
+  
+  @Column()
+  hardQuestionsPercentage: number;
+
+
 }
