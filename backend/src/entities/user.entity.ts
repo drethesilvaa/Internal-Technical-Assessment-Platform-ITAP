@@ -31,9 +31,6 @@ export class User {
   @Column()
   role: UserRole;
 
-  @OneToMany(() => TestAssignment, (assignment) => assignment.candidate)
-  testAssignments: TestAssignment[];
-
   @OneToMany(() => TestAssignment, (assignment) => assignment.createdBy)
   createdAssignments: TestAssignment[];
 

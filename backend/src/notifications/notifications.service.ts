@@ -6,26 +6,35 @@ import { User } from '../entities/user.entity';
 export class NotificationsService {
   constructor(private mailerService: MailerService) {}
 
-  async sendTestInvite(candidate: User, token: string, deadline: Date) {
+  async sendTestInvite(
+    candidateName: string,
+    candidateEmail: string,
+    token: string,
+    deadline: Date,
+  ) {
     return this.mailerService.sendMail({
-      to: candidate.email,
+      to: candidateEmail,
       subject: '🎓 You’ve been assigned a test!',
       template: 'test-invite',
       context: {
-        name: candidate.name,
+        name: candidateName,
         token,
         deadline: deadline.toDateString(),
       },
     });
   }
 
-  async sendReminder(candidate: User, deadline: Date) {
+  async sendReminder(
+    candidateName: string,
+    candidateEmail: string,
+    deadline: Date,
+  ) {
     return this.mailerService.sendMail({
-      to: candidate.email,
+      to: candidateEmail,
       subject: '⏰ Reminder: Test deadline approaching!',
       template: 'reminder',
       context: {
-        name: candidate.name,
+        name: candidateName,
         deadline: deadline.toDateString(),
       },
     });

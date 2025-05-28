@@ -1,12 +1,13 @@
+
 "use client";
 
 import { DashboardLayout } from "@/layouts/DashboardLayout";
-import { Tests } from "@/modules/Tests/page";
+import TestNew from "@/modules/Tests/features/new/page";
 
-export default function TestPage() {
+export default function TestNewPage() {
     return (<DashboardLayout>
         <div className='card w-full bg-base-100 card-xs shadow-sm p-4'>
-            <Tests />
+            <TestNew />
         </div>
     </DashboardLayout>)
 }

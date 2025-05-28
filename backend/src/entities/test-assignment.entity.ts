@@ -17,8 +17,11 @@ export class TestAssignment {
   @Exclude()
   id: string;
 
-  @ManyToOne(() => User, (user) => user.testAssignments)
-  candidate: User;
+  @Column()
+  candidateName: string;
+
+  @Column()
+  candidateEmail: string;
 
   @ManyToOne(() => TestTemplate)
   template: TestTemplate;

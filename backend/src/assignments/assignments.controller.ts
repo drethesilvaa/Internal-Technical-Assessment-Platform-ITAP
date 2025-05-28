@@ -20,6 +20,13 @@ import { Roles } from '../shared/decorators/roles.decorator';
 export class AssignmentsController {
   constructor(private readonly service: AssignmentsService) {}
 
+  @Get('tests')
+  @Roles('admin')
+  @ApiOperation({ summary: 'List all tests' })
+  getAllAssignments() {
+    return this.service.getAll();
+  }
+
   @Post('assign-test')
   @Roles('manager', 'admin')
   @ApiOperation({ summary: 'Assign test to candidate' })

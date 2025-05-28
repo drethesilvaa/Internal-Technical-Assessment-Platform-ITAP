@@ -69,6 +69,6 @@ export class AuthService {
 
     if (!assignment) throw new UnauthorizedException('Invalid token');
 
-    return { valid: true, candidate: assignment.candidate };
+    return { valid: true, candidate: assignment.candidateEmail };
   }
 }

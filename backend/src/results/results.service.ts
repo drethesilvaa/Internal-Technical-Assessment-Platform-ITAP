@@ -28,12 +28,12 @@ export class ResultsService {
 
   async compareCandidates(id1: string, id2: string) {
     const results1 = await this.resultRepo.find({
-      where: { testAssignment: { candidate: { id: id1 } } },
+      where: { testAssignment: { candidateEmail: id1 } },
       relations: ['testAssignment'],
     });
 
     const results2 = await this.resultRepo.find({
-      where: { testAssignment: { candidate: { id: id2 } } },
+      where: { testAssignment: { candidateEmail: id2 } },
       relations: ['testAssignment'],
     });
 
