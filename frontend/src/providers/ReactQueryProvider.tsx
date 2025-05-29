@@ -9,7 +9,7 @@ export const ReactQueryProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ToastContainer />
+            <ToastContainer position="top-center" />
             {children}
         </QueryClientProvider>
     );

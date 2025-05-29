@@ -39,6 +39,47 @@ export class TestsService {
     };
   }
 
+  async getTestInfoByToken(token: string) {
+    const assignment = await this.assignmentRepo.findOne({
+      where: { token },
+      relations: ['template', 'template.questions', 'template.createdBy'],
+    });
+
+    if (!assignment) throw new NotFoundException('Invalid token');
+
+    const testResult = await this.resultRepo.findOne({
+      where: { testAssignment: { id: assignment.id } },
+      relations: ['questionResults'],
+    });
+
+    let totalTimeSpent = 0;
+    let totalTabSwitches = 0;
+    let answeredQuestions = 0;
+
+    if (testResult && testResult.questionResults) {
+      totalTimeSpent = testResult.questionResults.reduce(
+        (acc, qr) => acc + (qr.timeSpent || 0),
+        0,
+      );
+      totalTabSwitches = testResult.questionResults.reduce(
+        (acc, qr) => acc + (qr.tabSwitches || 0),
+        0,
+      );
+      answeredQuestions = testResult.questionResults.length;
+    }
+
+    return {
+      template: assignment.template.name,
+      nQuestions: assignment.template.questions.length,
+      answeredQuestions,
+      createdBy: assignment.template.createdBy.name,
+      deadline: assignment.deadline,
+      totalTimeSpent,
+      totalTabSwitches,
+      status: assignment.status,
+    };
+  }
+
   async submitAnswer(dto: SubmitAnswerDto) {
     const result = await this.resultRepo.findOne({
       where: { id: dto.testId },

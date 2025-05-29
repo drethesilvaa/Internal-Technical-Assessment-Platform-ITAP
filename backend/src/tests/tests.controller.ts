@@ -18,6 +18,13 @@ export class TestsController {
   }
 
   @UseGuards(CandidateTokenGuard)
+  @Get('test/info/:token')
+  @ApiOperation({ summary: 'Pulls assigned test info' })
+  getTestInfo(@Param('token') token: string) {
+    return this.testsService.getTestInfoByToken(token);
+  }
+
+  @UseGuards(CandidateTokenGuard)
   @Post('submit-answer')
   @ApiOperation({ summary: 'Submit answer to a question' })
   submit(@Body() dto: SubmitAnswerDto) {

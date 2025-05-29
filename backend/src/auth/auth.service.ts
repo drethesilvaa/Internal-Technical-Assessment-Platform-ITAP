@@ -64,7 +64,6 @@ export class AuthService {
   async validateCandidateToken(dto: ValidateTokenDto) {
     const assignment = await this.assignmentRepo.findOne({
       where: { token: dto.token },
-      relations: ['candidate'],
     });
 
     if (!assignment) throw new UnauthorizedException('Invalid token');

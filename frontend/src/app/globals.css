@@ -28,6 +28,42 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.heading-8xl {
+  @apply text-5xl md:text-8xl;
+}
+
+.heading-6xl {
+  @apply text-3xl md:text-6xl;
+}
+
+.heading-5xl {
+  @apply text-2xl md:text-5xl;
+}
+
+.heading-4xl {
+  @apply text-2xl md:text-4xl;
+}
+
+.heading-3xl {
+  @apply text-xl md:text-3xl;
+}
+
+.heading-2xl {
+  @apply text-lg md:text-2xl;
+}
+
+.heading-xl {
+  @apply text-sm md:text-xl;
+}
+
+.heading-lg {
+  @apply text-base md:text-lg font-medium;
+}
+
+.body-2xl {
+  @apply text-base md:text-2xl;
+}
+
 .button-group {
   button {
     @apply btn;
