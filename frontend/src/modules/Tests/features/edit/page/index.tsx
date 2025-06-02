@@ -1,46 +1,40 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { TestForm } from '@/modules/Tests/components/TestForm';
+import { useGetTestTemplates } from '@/modules/Test-Templates/hooks/useGetTestTemplates';
 import { api } from '@/utils/api';
-import { TestTemplateForm } from '@/modules/Test-Templates/components/TestTemplateForm';
-import { useGetStacks } from '@/modules/Settings/features/Stacks/hooks/useGetStacks';
+import { useMutation } from '@tanstack/react-query';
+import { useGetTestById } from '@/modules/Tests/hooks/useGetTestById';
+import { DateTime } from 'luxon';
 
-export default function EditTemplatePage() {
+export default function EditTestPage() {
     const { id } = useParams();
     const router = useRouter();
-    const templateId = id as string;
+    const TestId = id as string;
 
-    const { data: stacks = [] } = useGetStacks()
+    const { data: TestTemplates = [] } = useGetTestTemplates()
 
-    const { data: template, isLoading } = useQuery({
-        queryKey: ['template', templateId],
-        queryFn: () => api.get(`/templates/${templateId}`).then((res) => res.data),
+    const { data: Test, isLoading } = useGetTestById(TestId)
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: (payload: any) => api.patch(`/test/${TestId}`, payload),
+        onSuccess: () => router.push('/dashboard/tests'),
     });
 
-    const { mutate: updateTemplate, isPending } = useMutation({
-        mutationFn: (values: any) => api.patch(`/templates/${templateId}`, values),
-        onSuccess: () => router.push('/dashboard/test-templates'),
-    });
+    if (isLoading) return <p>Loading...</p>
 
-    const { mutate: deleteTemplate } = useMutation({
-        mutationFn: () => api.delete(`/templates/${templateId}`),
-        onSuccess: () => router.push('/dashboard/test-templates'),
-    });
-
-    if (isLoading || !template) return <p>Loading...</p>;
 
     return (
-        <TestTemplateForm
-            mode="edit"
+        <TestForm
             isPending={isPending}
-            onSubmit={(values) => updateTemplate(values)}
-            onDelete={() => deleteTemplate()}
-            stacks={stacks}
+            onSubmit={(values) => mutate(values)}
+            templates={TestTemplates}
             initialValues={{
-                name: template.name,
-                difficulty: template.difficulty,
-                stackIds: template.stacks.map((s: any) => s.id),
+                candidateName: Test?.candidateName,
+                candidateEmail: Test?.candidateEmail,
+                template: Test?.template?.id,
+                deadline:new DateTime(Test?.deadline).setLocale('pt').toFormat('yyyy-MM-dd') 
             }}
         />
     );

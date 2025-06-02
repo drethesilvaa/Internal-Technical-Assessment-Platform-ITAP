@@ -71,7 +71,7 @@ export const MakeAssignment = () => {
                                         <p className="font-semibold">Criado por</p>
                                         <p>{TestInfo.createdBy}</p>
                                         <p className="font-semibold">Prazo</p>
-                                        <p>{new DateTime(TestInfo.deadline).setLocale('fr').toFormat('dd MMMM, yyyy')}</p>
+                                        <p>{new DateTime(TestInfo.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</p>
                                         <p className="font-semibold">Total de Tempo</p>
                                         <p>{TestInfo.totalTimeSpent}</p>
                                         <p className="font-semibold">Total de "Tab Switches"</p>

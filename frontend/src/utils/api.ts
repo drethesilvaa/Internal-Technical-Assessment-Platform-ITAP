@@ -15,14 +15,10 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     if (err.response?.status === 401) {
-      const refreshToken = getCookie("refreshToken");
-
-      if (refreshToken) {
         try {
-          await api.post("/auth/refresh", { token: refreshToken });
+          await api.post("/auth/refresh");
           return api.request(err.config);
         } catch {}
-      }
     }
 
     return Promise.reject(err);

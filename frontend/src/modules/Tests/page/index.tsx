@@ -1,6 +1,7 @@
 import { PlusIcon, UserIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useGetTests } from "../hooks/useGetTests";
+import { DateTime } from "luxon";
 
 export const Tests = () => {
 
@@ -24,6 +25,7 @@ export const Tests = () => {
                             <th>Email</th>
                             <th>Status</th>
                             <th>Stack(s)</th>
+                            <th>Deadline</th>
                             <th>Created By</th>
                         </tr>
                     </thead>
@@ -36,6 +38,7 @@ export const Tests = () => {
                                     {t.template.name}
                                     {/* <span className="badge badge-ghost badge-sm">Desktop Support Technician</span> */}
                                 </td>
+                                <td>{new DateTime(t.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</td>
                                 <td>{t.createdBy?.name}</td>
                                 <th>
                                     <button className="btn btn-ghost btn-xs" onClick={() => router.push(`tests/${t.id}`)}>details</button>
@@ -49,6 +52,7 @@ export const Tests = () => {
                             <th>Email</th>
                             <th>Status</th>
                             <th>Stack(s)</th>
+                            <th>Deadline</th>
                             <th>Created By</th>
                         </tr>
                     </tfoot>

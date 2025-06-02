@@ -14,7 +14,6 @@ import { Stack } from './stack.entity';
 @Entity()
 export class TestAssignment {
   @PrimaryGeneratedColumn('uuid')
-  @Exclude()
   id: string;
 
   @Column()

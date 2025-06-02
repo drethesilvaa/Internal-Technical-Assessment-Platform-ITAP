@@ -9,6 +9,7 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 import { generateToken } from 'src/shared/utils/token-generator';
 import { instanceToPlain } from 'class-transformer';
 import { QueryRunner } from 'typeorm';
+import { UpdateTestDto } from './dto/update-test.dto';
 
 @Injectable()
 export class AssignmentsService {
@@ -21,8 +22,7 @@ export class AssignmentsService {
     private templateRepo: Repository<TestTemplate>,
     private readonly notifications: NotificationsService,
 
-    private readonly dataSource: DataSource // 🔥 Add this
-
+    private readonly dataSource: DataSource, // 🔥 Add this
   ) {}
 
   async assignTest(dto: AssignTestDto, manager: User) {
@@ -85,5 +85,22 @@ export class AssignmentsService {
     });
 
     return tests.map((test) => instanceToPlain(test));
+  }
+
+  async getAssignment(id: string) {
+    const test = await this.assignmentRepo.findOne({
+      where: { id: id },
+      relations: ['template', 'createdBy'],
+    });
+
+    return instanceToPlain(test);
+  }
+
+  async updateTest(id: string, dto: UpdateTestDto) {
+    const entity = await this.assignmentRepo.findOne({ where: { id } });
+    if (!entity) throw new NotFoundException('Test not found');
+
+    Object.assign(entity, dto);
+    return this.assignmentRepo.save(entity);
   }
 }
