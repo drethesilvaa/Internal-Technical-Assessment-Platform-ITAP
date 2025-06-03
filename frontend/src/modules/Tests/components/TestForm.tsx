@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { DateTime } from 'luxon';
 
 interface TestFormProps {
+    mode?: "edit" | "new"
     initialValues: {
         candidateName: string,
         candidateEmail: string,
@@ -37,17 +38,18 @@ const schema = Yup.object({
 });
 
 export const TestForm = ({
+    mode = "new",
     initialValues,
     isPending,
     onSubmit,
     onDelete,
     templates,
 }: TestFormProps) => {
-    
+
     return (
         <div className="max-w-3xl">
             <h2 className="text-2xl font-bold mb-6">
-                {'New User Test'}
+                {mode === "new" ? 'New User Test' : "Edit User test"}
             </h2>
 
             <Formik
@@ -62,6 +64,7 @@ export const TestForm = ({
                             {({ field }: any) => (
                                 <input
                                     {...field}
+                                    disabled={mode === "edit"}
                                     placeholder="Candidate Name"
                                     className="input input-bordered w-full"
                                 />
@@ -73,6 +76,7 @@ export const TestForm = ({
                             {({ field }: any) => (
                                 <input
                                     {...field}
+                                    disabled={mode === "edit"}
                                     placeholder="Candidate Email"
                                     className="input input-bordered w-full"
                                 />
@@ -80,7 +84,7 @@ export const TestForm = ({
                         </Field>
                         <ErrorMessage name="candidateEmail" component="div" className="text-red-500 text-sm" />
 
-                        <Field as="select" name="template" className="select select-bordered w-full">
+                        <Field disabled={mode === "edit"} as="select" name="template" className="select select-bordered w-full">
                             <option value="" disabled>
                                 Select Template
                             </option>
@@ -108,7 +112,7 @@ export const TestForm = ({
                                 className="btn btn-primary"
                                 disabled={!dirty || !isValid || isPending}
                             >
-                                {isPending ? 'Saving...' : 'Create'}
+                                {isPending ? 'Saving...' : mode === "new" ? 'Create' : "Update"}
                             </button>
 
                             {/* {mode === 'edit' && onDelete && (

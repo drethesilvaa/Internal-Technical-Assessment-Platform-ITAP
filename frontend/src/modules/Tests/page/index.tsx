@@ -38,7 +38,7 @@ export const Tests = () => {
                                     {t.template.name}
                                     {/* <span className="badge badge-ghost badge-sm">Desktop Support Technician</span> */}
                                 </td>
-                                <td>{new DateTime(t.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</td>
+                                <td>{DateTime.fromISO(t.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</td>
                                 <td>{t.createdBy?.name}</td>
                                 <th>
                                     <button className="btn btn-ghost btn-xs" onClick={() => router.push(`tests/${t.id}`)}>details</button>

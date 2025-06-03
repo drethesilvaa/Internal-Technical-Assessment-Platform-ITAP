@@ -37,7 +37,7 @@ export class TestsController {
   }
 
   @UseGuards(CandidateTokenGuard)
-  @Get('question')
+  @Get('test/question')
   async getQuestion(
     @Query('assignmentToken') assignmentToken: string,
     @Query('questionId') questionId: string,
@@ -46,13 +46,13 @@ export class TestsController {
   }
 
   @UseGuards(CandidateTokenGuard)
-  @Get('question-result/:id/time')
+  @Get('test/question-result/:id/time')
   async getTimeSpent(@Param('id') id: string) {
     return this.qResultsService.getTimeSpent(id);
   }
 
   @UseGuards(CandidateTokenGuard)
-  @Patch('question-result/:id/time')
+  @Patch('test/question-result/:id/time')
   async updateTimeSpent(
     @Param('id') id: string,
     @Body() body: { seconds: number; tabSwitch?: boolean },

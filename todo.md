@@ -1,9 +1,7 @@
-Controllers for Questions in generall - done
-Add Question Stack on Question Entity - done
-Finish Questions and prove flux
-Tables Filters and Pagination
+test provider - for test innit and load questions not answered and manage next and previous question ( parent of Question Provider )
+question provider - add submit question 
+test layout - tbd
 
-Change test templates - admin selects stack and the system give random questions according to difficulty
-
-
-points config CRUD - done 
+admin:
+- table filters tbd
+- toasts tbd

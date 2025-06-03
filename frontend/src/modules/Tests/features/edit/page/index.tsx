@@ -27,6 +27,7 @@ export default function EditTestPage() {
 
     return (
         <TestForm
+            mode="edit"
             isPending={isPending}
             onSubmit={(values) => mutate(values)}
             templates={TestTemplates}
@@ -34,7 +35,7 @@ export default function EditTestPage() {
                 candidateName: Test?.candidateName,
                 candidateEmail: Test?.candidateEmail,
                 template: Test?.template?.id,
-                deadline:new DateTime(Test?.deadline).setLocale('pt').toFormat('yyyy-MM-dd') 
+                deadline: DateTime.fromISO(Test?.deadline).setLocale('pt').toFormat('yyyy-MM-dd')
             }}
         />
     );
