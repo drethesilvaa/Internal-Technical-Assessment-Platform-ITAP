@@ -28,20 +28,11 @@ export class QuestionResultService {
       where: { token: assignmentToken },
       relations: ['results', 'results.questionResults'],
     });
-    if (!assignment) throw new NotFoundException('Invalid token');
+    if (!assignment)
+      throw new NotFoundException('Invalid token dwdwa');
 
-    
     let testResult = assignment.results[0];
-    if (!testResult) {
-      testResult = this.testResultRepo.create({
-        testAssignment: assignment,
-        startedAt: new Date(),
-        totalScore: 0,
-      });
-      await this.testResultRepo.save(testResult);
-    }
 
-    
     let questionResult = await this.questionResultRepo.findOne({
       where: {
         testResult: { id: testResult.id },

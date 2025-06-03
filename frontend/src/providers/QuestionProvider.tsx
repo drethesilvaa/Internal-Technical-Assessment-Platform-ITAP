@@ -1,4 +1,4 @@
-import { api } from '@/utils/api';
+import { unAuthApi } from '@/utils/unAuthApi';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface Question {
@@ -14,11 +14,13 @@ interface QuestionContextType {
     elapsed: number;
     loadQuestion: (assignmentToken: string, questionId: string) => Promise<void>;
     error: string | null;
+    submitAnswer: (answer: string) => Promise<void>;
+    token: string;
 }
 
 const QuestionContext = createContext<QuestionContextType | undefined>(undefined);
 
-export const QuestionProvider = ({ children }: { children: ReactNode }) => {
+export const QuestionProvider = ({ children, token }: { token: string, children: ReactNode }) => {
     const [question, setQuestion] = useState<Question | null>(null);
     const [questionResultId, setQuestionResultId] = useState<string | null>(null);
     const [elapsed, setElapsed] = useState(0);
@@ -32,14 +34,19 @@ export const QuestionProvider = ({ children }: { children: ReactNode }) => {
     const loadQuestion = async (assignmentToken: string, questionId: string) => {
         try {
             setError(null);
-            const res = await api.get('/test/question', {
-                params: { assignmentToken, questionId },
+            const res = await unAuthApi.get(`/test/question/${questionId}`, {
+                params: { assignmentToken },
+                headers: { 'x-candidate-token': assignmentToken }
             });
             setQuestion(res.data.question);
             setQuestionResultId(res.data.questionResultId);
 
 
-            const timeRes = await api.get(`/test/question-result/${res.data.questionResultId}/time`);
+            const timeRes = await unAuthApi.get(`/test/question-result/${res.data.questionResultId}/time`,
+                {
+                    headers: { 'x-candidate-token': assignmentToken }
+                }
+            );
             setElapsed(timeRes.data.timeSpent);
 
             secondsRef.current = 0;
@@ -51,6 +58,25 @@ export const QuestionProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const submitAnswer = async (answer: string) => {
+        if (!questionResultId || !question) {
+            setError('No question loaded');
+            return;
+        }
+        try {
+            await unAuthApi.post('/submit-answer', {
+                testId: questionResultId, // **Note**: your current backend expects testId (TestResult id), but QuestionResult id is different. Adjust accordingly.
+                questionId: question.id,
+                answer,
+                timeSpent: elapsed, // or 0 if no timer
+                headers: { 'x-candidate-token': token }
+            });
+            // On success, you may want to update UI or notify parent TestProvider to mark question as answered
+        } catch {
+            setError('Failed to submit answer');
+        }
+    };
+
 
     useEffect(() => {
         const handleVisibility = () => {
@@ -58,10 +84,10 @@ export const QuestionProvider = ({ children }: { children: ReactNode }) => {
             setIsVisible(visible);
 
             if (!visible && questionResultId) {
-                api.patch(`/test/question-result/${questionResultId}/time`, {
+                unAuthApi.patch(`/test/question-result/${questionResultId}/time`, {
                     seconds: secondsRef.current,
                     tabSwitch: true,
-                });
+                }, { headers: { 'x-candidate-token': token } });
                 setElapsed((prev) => prev + secondsRef.current);
                 secondsRef.current = 0;
                 lastSavedRef.current = Date.now();
@@ -83,9 +109,10 @@ export const QuestionProvider = ({ children }: { children: ReactNode }) => {
 
             const now = Date.now();
             if ((now - lastSavedRef.current) / 1000 >= 10 && secondsRef.current > 0) {
-                api.patch(`/test/question-result/${questionResultId}/time`, {
+                unAuthApi.patch(`/test/question-result/${questionResultId}/time`, {
                     seconds: secondsRef.current,
-                });
+
+                }, { headers: { 'x-candidate-token': token } });
                 secondsRef.current = 0;
                 lastSavedRef.current = now;
             }
@@ -96,7 +123,7 @@ export const QuestionProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <QuestionContext.Provider
-            value={{ question, questionResultId, elapsed, loadQuestion, error }}
+            value={{ question, questionResultId, elapsed, loadQuestion, error, submitAnswer, token }}
         >
             {children}
         </QuestionContext.Provider>

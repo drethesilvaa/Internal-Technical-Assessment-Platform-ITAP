@@ -2,9 +2,17 @@
 
 import Assignment from "@/modules/assignment/pages";
 import { QuestionProvider } from "@/providers/QuestionProvider";
+import { TestProvider } from "@/providers/TestProvider";
+import { useParams } from "next/navigation";
 
 export default function AssignmentPage() {
-    return (<QuestionProvider>
-        <Assignment />
-    </QuestionProvider>)
+    const { token } = useParams();
+
+    if (!token) return <div>Invalid token</div>;
+    
+    return (<TestProvider >
+        <QuestionProvider token={token as string}  >
+            <Assignment />
+        </QuestionProvider>
+    </TestProvider>)
 }

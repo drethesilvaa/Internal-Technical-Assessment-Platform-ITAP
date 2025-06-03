@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { api } from '@/utils/api';
+import { unAuthApi } from '@/utils/unAuthApi';
 
 interface User {
     id: string;
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }: any) => {
 
 
     const login = async (email: string, password: string) => {
-        await api.post('/auth/login', { email, password });
+        await unAuthApi.post('/auth/login', { email, password });
         await fetchUser();
         router.push('/dashboard');
     };

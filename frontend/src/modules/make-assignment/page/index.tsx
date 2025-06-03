@@ -1,12 +1,15 @@
-import { api } from "@/utils/api";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useGetTestInfoByToken } from "../hooks/useGetTestInfoByToken";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 import { InfoIcon } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
+import { unAuthApi } from "@/utils/unAuthApi";
 
 export const MakeAssignment = () => {
+
+    const router = useRouter()
 
     const [token, setToken] = useState('');
     const [ValidToken, setValidToken] = useState('');
@@ -15,7 +18,7 @@ export const MakeAssignment = () => {
 
     const { mutate: verifyToken, isPending } = useMutation({
         mutationFn: (values: any) => toast.promise(
-            api.post(`/auth/validate-token`, values),
+            unAuthApi.post(`/auth/validate-token`, values),
             {
                 pending: 'Validating your token ..',
                 success: {
@@ -71,16 +74,18 @@ export const MakeAssignment = () => {
                                         <p className="font-semibold">Criado por</p>
                                         <p>{TestInfo.createdBy}</p>
                                         <p className="font-semibold">Prazo</p>
-                                        <p>{new DateTime(TestInfo.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</p>
+                                        <p>{DateTime.fromISO(TestInfo.deadline).setLocale('pt').toFormat('dd MMMM, yyyy')}</p>
                                         <p className="font-semibold">Total de Tempo</p>
-                                        <p>{TestInfo.totalTimeSpent}</p>
+                                        <p>{(Duration.fromObject({ seconds: (TestInfo.totalTimeSpent as number) }).shiftTo('minutes', 'seconds').toFormat('m:ss'))}m</p>
                                         <p className="font-semibold">Total de "Tab Switches"</p>
                                         <p>{TestInfo.totalTabSwitches}</p>
                                         <p className="font-semibold">Estado</p>
                                         <p>{TestInfo.status}</p>
                                     </div>
                                     <div className="flex gap-4 mt-4">
-                                        <button className="btn btn-primary" type="submit" disabled={isPending}>Iniciar Teste</button>
+                                        <button className="btn btn-primary" type="submit" disabled={isPending} onClick={() => {
+                                            router.push(`/assignment/${ValidToken}`)
+                                        }}>Iniciar Teste</button>
                                         <button className="btn btn-secondary" onClick={() => {
                                             (document.getElementById('dialogTestHelp') as HTMLDialogElement)?.showModal();
                                         }}><InfoIcon size={30} /> </button>

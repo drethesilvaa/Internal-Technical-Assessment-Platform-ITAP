@@ -24,17 +24,41 @@ export class TestsService {
   async getTestByToken(token: string) {
     const assignment = await this.assignmentRepo.findOne({
       where: { token },
-      relations: ['template', 'template.questions'],
+      relations: [
+        'template',
+        'template.questions',
+        'results',
+        'results.questionResults',
+        'results.questionResults.question',
+      ],
     });
 
     if (!assignment) throw new NotFoundException('Invalid token');
+
+    let testResult: TestResult | null = assignment.results[0];
+    if (!testResult) {
+      testResult = this.resultRepo.create({
+        testAssignment: assignment,
+        startedAt: new Date(),
+        totalScore: 0,
+      });
+      await this.resultRepo.save(testResult);
+    }
+
+    const answeredQuestionIds = new Set(
+      testResult?.questionResults?.map((qr) => qr.answer) || [],
+    );
+
+    if (assignment.status !== 'in progress') {
+      assignment.status = 'in progress';
+      await this.assignmentRepo.save(assignment);
+    }
+
     return {
-      template: assignment.template.name,
+      testResultId: testResult?.id,
       questions: assignment.template.questions.map((q) => ({
         id: q.id,
-        content: q.content,
-        type: q.type,
-        points: q.points,
+        answered: answeredQuestionIds.has(q.id),
       })),
     };
   }
@@ -42,19 +66,24 @@ export class TestsService {
   async getTestInfoByToken(token: string) {
     const assignment = await this.assignmentRepo.findOne({
       where: { token },
-      relations: ['template', 'template.questions', 'template.createdBy'],
+      relations: [
+        'template',
+        'template.questions',
+        'template.createdBy',
+        'results',
+        'results.questionResults',
+      ],
     });
 
-    if (!assignment) throw new NotFoundException('Invalid token');
+    if (!assignment) throw new NotFoundException('Invalid token aaaa');
 
-    const testResult = await this.resultRepo.findOne({
-      where: { testAssignment: { id: assignment.id } },
-      relations: ['questionResults'],
-    });
+    const testResult = assignment.results[0];
 
     let totalTimeSpent = 0;
     let totalTabSwitches = 0;
     let answeredQuestions = 0;
+
+    console.log(assignment);
 
     if (testResult && testResult.questionResults) {
       totalTimeSpent = testResult.questionResults.reduce(
@@ -65,7 +94,9 @@ export class TestsService {
         (acc, qr) => acc + (qr.tabSwitches || 0),
         0,
       );
-      answeredQuestions = testResult.questionResults.length;
+      answeredQuestions = testResult.questionResults.filter(
+        (a) => a.answer !== '',
+      ).length;
     }
 
     return {
@@ -79,7 +110,6 @@ export class TestsService {
       status: assignment.status,
     };
   }
-
 
   async submitAnswer(dto: SubmitAnswerDto) {
     const result = await this.resultRepo.findOne({

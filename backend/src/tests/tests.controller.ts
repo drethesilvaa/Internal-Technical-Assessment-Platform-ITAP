@@ -18,9 +18,10 @@ import { QuestionResultService } from 'src/question-result/question-result.servi
 @ApiTags('Candidate')
 @Controller()
 export class TestsController {
-  constructor(private readonly testsService: TestsService) {}
-
-  private readonly qResultsService: QuestionResultService;
+  constructor(
+    private readonly testsService: TestsService,
+    private readonly qResultsService: QuestionResultService,
+  ) {}
 
   @UseGuards(CandidateTokenGuard)
   @Get('test/:token')
@@ -37,10 +38,10 @@ export class TestsController {
   }
 
   @UseGuards(CandidateTokenGuard)
-  @Get('test/question')
+  @Get('test/question/:questionId')
   async getQuestion(
     @Query('assignmentToken') assignmentToken: string,
-    @Query('questionId') questionId: string,
+    @Param('questionId') questionId: string,
   ) {
     return this.qResultsService.getQuestionForTest(assignmentToken, questionId);
   }

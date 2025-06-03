@@ -6,6 +6,7 @@ import { TestAssignment } from '../entities/test-assignment.entity';
 import { TestResult } from '../entities/test-result.entity';
 import { QuestionResult } from '../entities/question-result.entity';
 import { Question } from '../entities/question.entity';
+import { QuestionResultModule } from 'src/question-result/question-result.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Question } from '../entities/question.entity';
       QuestionResult,
       Question,
     ]),
+    QuestionResultModule
   ],
   controllers: [TestsController],
   providers: [TestsService],
