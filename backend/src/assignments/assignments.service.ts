@@ -5,8 +5,8 @@ import { AssignTestDto } from './dto/assign-test.dto';
 import { TestAssignment } from '../entities/test-assignment.entity';
 import { User } from '../entities/user.entity';
 import { TestTemplate } from '../entities/test-template.entity';
-import { NotificationsService } from 'src/notifications/notifications.service';
-import { generateToken } from 'src/shared/utils/token-generator';
+import { NotificationsService } from '../notifications/notifications.service';
+import { generateToken } from '../shared/utils/token-generator';
 import { instanceToPlain } from 'class-transformer';
 import { QueryRunner } from 'typeorm';
 import { UpdateTestDto } from './dto/update-test.dto';
@@ -22,7 +22,7 @@ export class AssignmentsService {
     private templateRepo: Repository<TestTemplate>,
     private readonly notifications: NotificationsService,
 
-    private readonly dataSource: DataSource, // 🔥 Add this
+    private readonly dataSource: DataSource,
   ) {}
 
   async assignTest(dto: AssignTestDto, manager: User) {

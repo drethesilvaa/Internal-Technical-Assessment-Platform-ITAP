@@ -85,9 +85,7 @@ describe('TemplatesService', () => {
         { name: 'Test', difficulty: 'junior', stackIds: ['1'] },
         mockUser,
       ),
-    ).rejects.toThrow(
-      'Not enough questions to meet the minimum required.',
-    );
+    ).rejects.toThrow('Not enough questions to meet the minimum required.');
   });
 
   it('should create a template successfully with valid inputs', async () => {
@@ -97,10 +95,14 @@ describe('TemplatesService', () => {
     (pointsConfigRepo.findOne as jest.Mock).mockResolvedValue({
       totalPoints: 50,
       minQuestions: 2,
+      easyQuestionsPercentage: 60,
+      mediumQuestionsPercentage: 40,
+      hardQuestionsPercentage: 0,
     });
     (questionRepo.find as jest.Mock).mockResolvedValue([
       { id: 'q1', points: 20, difficulty: 'easy', stack: { id: '1' } },
       { id: 'q2', points: 30, difficulty: 'medium', stack: { id: '1' } },
+      { id: 'q3', points: 40, difficulty: 'hard', stack: { id: '1' } },
     ]);
 
     const result = await service.createTemplate(
@@ -112,12 +114,14 @@ describe('TemplatesService', () => {
       expect.objectContaining({
         name: 'Valid Template',
         difficulty: 'junior',
-        stacks: expect.any(Array),
+        stacks: [{ id: '1', name: 'React' }],
         questions: expect.any(Array),
         createdBy: mockUser,
       }),
     );
     expect(templateRepo.save).toHaveBeenCalled();
     expect(result.id).toBe('template-1');
+    
+    expect(result.questions.length).toBeGreaterThanOrEqual(2);
   });
 });
