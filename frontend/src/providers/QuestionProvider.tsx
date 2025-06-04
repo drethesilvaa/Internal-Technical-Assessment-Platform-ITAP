@@ -8,6 +8,12 @@ interface Question {
     type: string;
 }
 
+interface QuestionAnswerOption {
+    id: string;
+    text: string;
+    isCorrect: boolean;
+}
+
 interface QuestionContextType {
     question: Question | null;
     questionResultId: string | null;
@@ -16,6 +22,7 @@ interface QuestionContextType {
     error: string | null;
     submitAnswer: (answer: string) => Promise<void>;
     token: string;
+    questionAnswerOptions: QuestionAnswerOption[] | null;
 }
 
 const QuestionContext = createContext<QuestionContextType | undefined>(undefined);
@@ -23,6 +30,7 @@ const QuestionContext = createContext<QuestionContextType | undefined>(undefined
 export const QuestionProvider = ({ children, token }: { token: string, children: ReactNode }) => {
     const [question, setQuestion] = useState<Question | null>(null);
     const [questionResultId, setQuestionResultId] = useState<string | null>(null);
+    const [questionAnswerOptions, setQuestionAnswerOptions] = useState<QuestionAnswerOption[] | null>(null);
     const [elapsed, setElapsed] = useState(0);
     const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +48,7 @@ export const QuestionProvider = ({ children, token }: { token: string, children:
             });
             setQuestion(res.data.question);
             setQuestionResultId(res.data.questionResultId);
+            setQuestionAnswerOptions(res.data.answerOptions);
 
 
             const timeRes = await unAuthApi.get(`/test/question-result/${res.data.questionResultId}/time`,
@@ -55,6 +64,8 @@ export const QuestionProvider = ({ children, token }: { token: string, children:
             setError('Failed to load question');
             setQuestion(null);
             setQuestionResultId(null);
+            setQuestionAnswerOptions(null);
+
         }
     };
 
@@ -123,7 +134,7 @@ export const QuestionProvider = ({ children, token }: { token: string, children:
 
     return (
         <QuestionContext.Provider
-            value={{ question, questionResultId, elapsed, loadQuestion, error, submitAnswer, token }}
+            value={{ question, questionResultId, elapsed, loadQuestion, error, submitAnswer, token, questionAnswerOptions }}
         >
             {children}
         </QuestionContext.Provider>

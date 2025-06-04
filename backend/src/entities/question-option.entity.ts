@@ -10,7 +10,7 @@ export class QuestionOption {
   text: string;
 
   @Column()
-  isCorrect: boolean;
+  isCorrect?: boolean;
 
   @ManyToOne(() => Question, (question) => question.options, {
     onDelete: 'CASCADE',

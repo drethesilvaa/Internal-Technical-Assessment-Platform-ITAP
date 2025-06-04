@@ -9,5 +9,5 @@ export const useQuestionTimerDisplay = () => {
         return `${m}:${s}`;
     };
 
-    return <div>Time spent: {formatTime(elapsed)}</div>;
+    return formatTime(elapsed)
 }

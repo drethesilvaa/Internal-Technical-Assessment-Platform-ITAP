@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: any) => {
 
 
     const login = async (email: string, password: string) => {
-        await unAuthApi.post('/auth/login', { email, password });
+        await api.post('/auth/login', { email, password });
         await fetchUser();
         router.push('/dashboard');
     };

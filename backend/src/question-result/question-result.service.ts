@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { QuestionOption } from 'src/entities/question-option.entity';
 import { QuestionResult } from 'src/entities/question-result.entity';
 import { Question } from 'src/entities/question.entity';
 import { TestAssignment } from 'src/entities/test-assignment.entity';
@@ -22,14 +23,16 @@ export class QuestionResultService {
   async getQuestionForTest(
     assignmentToken: string,
     questionId: string,
-  ): Promise<{ question: Question; questionResultId: string }> {
-
+  ): Promise<{
+    question: Question;
+    questionResultId: string;
+    answerOptions: QuestionOption[];
+  }> {
     const assignment = await this.assignmentRepo.findOne({
       where: { token: assignmentToken },
       relations: ['results', 'results.questionResults'],
     });
-    if (!assignment)
-      throw new NotFoundException('Invalid token dwdwa');
+    if (!assignment) throw new NotFoundException('Invalid token');
 
     let testResult = assignment.results[0];
 
@@ -59,10 +62,15 @@ export class QuestionResultService {
 
     const question = await this.questionRepo.findOne({
       where: { id: questionId },
+      relations: ['options'],
     });
     if (!question) throw new NotFoundException('Question not found');
 
-    return { question, questionResultId: questionResult.id };
+    return {
+      question,
+      questionResultId: questionResult.id,
+      answerOptions: question?.options.map(({ isCorrect, ...rest }) => rest),
+    };
   }
 
   async getTimeSpent(questionResultId: string) {

@@ -5,6 +5,8 @@ import { useTest } from '@/providers/TestProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useQuestionTimerDisplay } from '../hooks/useQuestionTimerDisplay';
+import { AssignmentLayout } from '@/layouts/AssignmentLayout';
+import { AssignmentQuestionAnswer } from '../features/question-answer/pages';
 
 
 export default function Assignment() {
@@ -12,7 +14,6 @@ export default function Assignment() {
         startOrResumeTest,
         currentQuestionId,
         goNext,
-        goPrev,
         loading,
         error,
     } = useTest();
@@ -24,8 +25,6 @@ export default function Assignment() {
         submitAnswer,
         token,
     } = useQuestion();
-
-    const Timer = useQuestionTimerDisplay()
 
     const [userAnswer, setUserAnswer] = useState('');
 
@@ -42,7 +41,7 @@ export default function Assignment() {
 
     const handleSubmit = async () => {
         await submitAnswer(userAnswer);
-        goNext(); // move to next question after submit
+        goNext();
     };
 
     if (loading) return <div>Loading test...</div>;
@@ -52,21 +51,8 @@ export default function Assignment() {
     if (!question) return <div>No question loaded</div>;
 
     return (
-        <div>
-            <h3>{question.title}</h3>
-            <div>{question.content}</div>
-            {Timer}
-            {/* Simple input for answer example */}
-            <input
-                type="text"
-                value={userAnswer}
-                onChange={e => setUserAnswer(e.target.value)}
-            />
-
-            <button onClick={handleSubmit}>Submit Answer</button>
-
-            <button onClick={goPrev}>Previous</button>
-            <button onClick={goNext}>Next</button>
-        </div>
+        <AssignmentLayout>
+            <AssignmentQuestionAnswer />
+        </AssignmentLayout>
     );
 }

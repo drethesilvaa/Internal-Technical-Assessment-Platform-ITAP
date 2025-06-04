@@ -56,6 +56,7 @@ export class TestsService {
 
     return {
       testResultId: testResult?.id,
+      testName: assignment.template.name,
       questions: assignment.template.questions.map((q) => ({
         id: q.id,
         answered: answeredQuestionIds.has(q.id),

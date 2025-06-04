@@ -9,11 +9,13 @@ interface QuestionStatus {
 interface TestContextType {
     assignmentToken: string | null;
     testResultId: string | null;
+    testTemplateName: string | null;
     questions: QuestionStatus[];
     currentQuestionId: string | null;
     currentIndex: number;
     loading: boolean;
     error: string | null;
+    
 
     startOrResumeTest: (token: string) => Promise<void>;
     goNext: () => void;
@@ -25,6 +27,7 @@ const TestContext = createContext<TestContextType | undefined>(undefined);
 
 export const TestProvider = ({ children }: { children: ReactNode }) => {
     const [assignmentToken, setAssignmentToken] = useState<string | null>(null);
+    const [testTemplateName, setTestTemplateName] = useState<string | null>(null);
     const [testResultId, setTestResultId] = useState<string | null>(null);
     const [questions, setQuestions] = useState<QuestionStatus[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,9 +46,10 @@ export const TestProvider = ({ children }: { children: ReactNode }) => {
                 headers: { 'x-candidate-token': token }
             });
 
-            const { testResultId, questions: qs } = res.data;
+            const { testResultId, questions: qs, testName } = res.data;
 
             setTestResultId(testResultId);
+            setTestTemplateName(testName)
             setQuestions(qs);
 
             const firstUnansweredIndex = qs.findIndex((q: any) => !q.answered);
@@ -97,6 +101,7 @@ export const TestProvider = ({ children }: { children: ReactNode }) => {
                 goNext,
                 goPrev,
                 jumpToQuestion,
+                testTemplateName,
             }}
         >
             {children}
